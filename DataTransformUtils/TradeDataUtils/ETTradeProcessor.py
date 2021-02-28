@@ -1,7 +1,7 @@
 import pandas as pd
 
 from DataTransformUtils.DateTimeUtils.DateProcessor import ExpandDate
-from TradeSymbolParser import ETTradeSymbolParser
+from DataTransformUtils.TradeDataUtils.TradeSymbolParser import ETTradeSymbolParser
 
 
 class ETTradeprocessor:
@@ -89,8 +89,20 @@ class ETTradeprocessor:
             close_transaction['dayPosition'] = close_date_array['dayPosition']
 
             # add Actions
-            close_transaction['action'] = 'SELL'
+            if j['ClosingAmount'] > 0:
+                close_transaction['action'] = 'SELL'
+            else:
+                close_transaction['action'] = 'EXPIRED'
+
             open_transaction['action'] = 'BUY'
+
+            # Dollar Amount
+            open_transaction['dollarAmount'] = j['DollarCost']
+            close_transaction['dollarAmount'] = j['ClosingAmount']
+
+            # Quantity
+            open_transaction['quantity'] = j['Quantity']
+            close_transaction['quantity'] = j['Quantity']
 
             if open_transaction['securityType'] == 'Equity':
                 equity_transaction_data.append(open_transaction)

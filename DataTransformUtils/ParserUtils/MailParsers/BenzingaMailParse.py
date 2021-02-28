@@ -1,6 +1,6 @@
 import bs4
 
-from ParserUtils import ParseUtils
+from DataTransformUtils.ParserUtils import ParseUtils
 
 
 class BzMessage:

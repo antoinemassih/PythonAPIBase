@@ -10,7 +10,7 @@ DBConnection = DB('TradeData',[])
 #TradeObject = TradesDF('csv', 'RealizedGLDownload.csv')
 #data = TradeObject.data
 #TradeObject.DateTradeOverlap()
-RawTradeData = pd.read_csv('RealizedGLDownload.csv', header=0, usecols=range(9))
+RawTradeData = pd.read_csv('../RealizedGLDownload.csv', header=0, usecols=range(9))
 
 
 DBConnection.writeToDB(RawTradeData,"TradeData_Raw_ET")

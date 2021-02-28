@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 from DBUtils.databaseConnect import DBConnect
-from ParserUtils import BenzingaMailParse as bz
+from DataTransformUtils.ParserUtils.MailParsers import BenzingaMailParse as bz
 from EmailUtils import GmailUtils as GmailUtil
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']

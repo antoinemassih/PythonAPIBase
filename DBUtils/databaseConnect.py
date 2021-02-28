@@ -32,4 +32,4 @@ class DBConnect():
         return pd.io.sql.get_schema(data.reset_index(), table)
 
     def closeDB(self):
-        self.database.close()
+        self.connection.close()
