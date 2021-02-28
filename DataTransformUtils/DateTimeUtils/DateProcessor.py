@@ -1,17 +1,26 @@
 import datetime
 
 
-def ExpandDate(date_input, format):
+def ExpandDate(date_input, date_format):
     date_string = str(date_input)
     data_processed = {}
-    date_data = datetime.datetime.strptime(date_string, format)
+    date_data = datetime.datetime.strptime(date_string, date_format)
+    data_processed['date'] = date_data
     data_processed['dayOfWeek'] = date_data.weekday()
-    data_processed['dayofMonth'] = date_data.strftime("%d")
-    data_processed['dayofYear'] = date_data.timetuple().tm_yday
-    data_processed['weekofYear'] = date_data.isocalendar()[1]
+    data_processed['dayOfMonth'] = date_data.strftime("%d")
+    data_processed['dayOfYear'] = date_data.timetuple().tm_yday
+    data_processed['weekOfYear'] = date_data.isocalendar()[1]
     data_processed['Month'] = date_data.strftime("%m")
     data_processed['Year'] = date_data.isocalendar()[0]
-    data_processed['dayPosition'] = data_processed['dayofYear'] + 365*(data_processed['Year']-2010)
+    data_processed['dayPosition'] = data_processed['dayOfYear'] + 365 * (data_processed['Year'] - 2010)
 
-    return(data_processed)
+    return data_processed
 
+
+def getRange(day_of_year1, day_of_year2):
+    if day_of_year1 == day_of_year2:
+        the_range = [day_of_year2]
+    else:
+        temp_range = range(day_of_year1, day_of_year2)
+        the_range = list(temp_range)
+    return the_range
