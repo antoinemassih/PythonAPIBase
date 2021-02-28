@@ -7,8 +7,11 @@ def GLperType():
     return True
 
 
-class ET_Transactions:
+class ETTradeprocessor:
+
     data = pd.DataFrame()
+    rawData = pd.DataFrame()
+
     tickerlist = []
     optionsTickerList = []
 

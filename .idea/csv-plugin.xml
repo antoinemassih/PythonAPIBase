@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/DataTransformUtils/tradesData.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="$USER_HOME$/Downloads/TradeDateUtils-master/OneTimeUtils/RealizedGLDownload.csv">
           <value>
             <Attribute>
