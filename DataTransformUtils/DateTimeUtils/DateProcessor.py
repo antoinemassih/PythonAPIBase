@@ -1,10 +1,8 @@
 import datetime
 
 
-def ExpandDate(date_input, date_format):
-    date_string = str(date_input)
+def ExpandDate(date_data):
     data_processed = {}
-    date_data = datetime.datetime.strptime(date_string, date_format)
     data_processed['date'] = date_data
     data_processed['dayOfWeek'] = date_data.weekday()
     data_processed['dayOfMonth'] = date_data.strftime("%d")

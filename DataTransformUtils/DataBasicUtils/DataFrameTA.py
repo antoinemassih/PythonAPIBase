@@ -1,4 +1,7 @@
 import pandas as pd
+import DataTransformUtils.DateTimeUtils.DateProcessor as dateProcessor
+import numpy as np
+from time import strptime
 
 
 class DataFrameTA:
@@ -41,7 +44,56 @@ class DataFrameTA:
         df = self.data
         df[columnName] = pd.eval(formula)
         self.data = df
-    def splitColumn(self,source_column,result_columns,delimiter):
+
+    def splitColumn(self, source_column, result_columns, delimiter):
         df = self.data
-        df[result_columns] = df[source_column].str.split(delimiter,expand=True )
+        df[result_columns] = df[source_column].str.split(delimiter, expand=True)
+        self.data = df
+
+    def stripColumn(self, column, destinationColumn, stripChars):
+        df = self.data
+        temp = df[column]
+        for char in stripChars:
+            temp = temp.str.replace(char, '')
+        df[destinationColumn] = temp
+        self.data = df
+
+    def expandDate(self, column, dateformat, destinationPrefix="_"):
+        destinationPrefix = column + destinationPrefix
+        df = self.data
+
+        self.addColumn(destinationPrefix + 'Date')
+        self.addColumn(destinationPrefix + 'DayOfWeek')
+        self.addColumn(destinationPrefix + 'DayOfMonth')
+        self.addColumn(destinationPrefix + 'DayOfYear')
+        self.addColumn(destinationPrefix + 'WeekOfYear')
+        self.addColumn(destinationPrefix + 'Month')
+        self.addColumn(destinationPrefix + 'DayPosition')
+
+        for ind in df.index:
+            dateArrayTemp = dateProcessor.ExpandDate(df[column][ind])
+            df[destinationPrefix + 'Date'][ind] = dateArrayTemp['date']
+            df[destinationPrefix + 'DayOfWeek'][ind] = dateArrayTemp['dayOfWeek']
+            df[destinationPrefix + 'DayOfMonth'][ind] = dateArrayTemp['dayOfMonth']
+            df[destinationPrefix + 'DayOfYear'][ind] = dateArrayTemp['dayOfYear']
+            df[destinationPrefix + 'WeekOfYear'][ind] = dateArrayTemp['weekOfYear']
+            df[destinationPrefix + 'Month'][ind] = dateArrayTemp['Month']
+            df[destinationPrefix + 'DayPosition'][ind] = dateArrayTemp['dayPosition']
+        self.data = df
+
+    def addColumn(self, columnName):
+        df = self.data
+        df[columnName] = np.nan
+        self.data = df
+
+    def createDate(self, monthColumn, dayColumn, yearColumn, columnName):
+        df = self.data
+
+        Month = df[monthColumn]
+        for char in ["'", " ", "-", "_"]:
+            Month = Month.str.replace(char, '')
+        for ind in Month.index:
+            Month[ind] = strptime(str(Month[ind]), '%b').tm_mon
+
+        df['columnName'] = Month
         self.data = df

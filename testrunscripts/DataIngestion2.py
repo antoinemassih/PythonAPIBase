@@ -10,20 +10,23 @@ DTFObject.computeColumn("Holding","df.CloseDate-df.OpenDate")
 DTFObject.sequenceGroup(column='Symbol',sequenceName='AddedTrade')
 DTFObject.splitColumn(source_column="Symbol",result_columns=['Ticker','ExpMonth','ExpDay','ExpYear','Strike','OptionType'],delimiter=" ")
 
-#Missing Date Expander / Processor
+DTFObject.expandDate(column="OpenDate",dateformat="%Y-%m-%d")
+DTFObject.expandDate(column="CloseDate",dateformat="%Y-%m-%d")
+DTFObject.stripColumn(column="Symbol",destinationColumn="Symbol_Identifier",stripChars=[" ",'$',"'"])
 
+DTFObject.createDate(monthColumn="ExpMonth",dayColumn="ExpDay",yearColumn="ExpYear",columnName="ExpDate")
 df = DTFObject.data
 
 dfEquity = df.loc[df['Symbol'].str.len() <= 4]
 dfOptions = df.loc[df['Symbol'].str.len() > 4]
 
+
+
 df = DTFObject.data
 
-spec_chars = [" ",'$',"'"]
 
 
-#df[['Ticker','ExpMonth','ExpDay','ExpYear','Strike','OptionType']] = df.Symbol.str.split(" ",expand=True,)
-for char in spec_chars:
-    df["Symbol"] = df["Symbol"].str.replace(char, '')
+
+
 print(df)
 # gui = show(df)
