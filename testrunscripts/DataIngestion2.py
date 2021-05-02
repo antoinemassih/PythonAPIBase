@@ -14,10 +14,14 @@ DTFObject.expandDate(column="OpenDate",dateformat="%Y-%m-%d")
 DTFObject.expandDate(column="CloseDate",dateformat="%Y-%m-%d")
 DTFObject.stripColumn(column="Symbol",destinationColumn="Symbol_Identifier",stripChars=[" ",'$',"'"])
 
-DTFObject.createDate(monthColumn="ExpMonth",dayColumn="ExpDay",yearColumn="ExpYear",columnName="ExpDate")
+
 df = DTFObject.data
 
 dfEquity = df.loc[df['Symbol'].str.len() <= 4]
+
+DTFObject.data = df.loc[df['Symbol'].str.len() > 4]
+DTFObject.createDate(monthColumn="ExpMonth",dayColumn="ExpDay",yearColumn="ExpYear",columnName="ExpDate")
+
 dfOptions = df.loc[df['Symbol'].str.len() > 4]
 
 

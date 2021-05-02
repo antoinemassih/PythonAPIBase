@@ -3,6 +3,7 @@ import DataTransformUtils.DateTimeUtils.DateProcessor as dateProcessor
 import numpy as np
 from time import strptime
 
+pd.options.mode.chained_assignment = None  # default='warn'
 
 class DataFrameTA:
     data = pd.DataFrame()
@@ -86,14 +87,28 @@ class DataFrameTA:
         df[columnName] = np.nan
         self.data = df
 
-    def createDate(self, monthColumn, dayColumn, yearColumn, columnName):
+    def createDate(self, monthColumn, dayColumn, yearColumn, columnName,removeColumns=False):
         df = self.data
 
         Month = df[monthColumn]
         for char in ["'", " ", "-", "_"]:
             Month = Month.str.replace(char, '')
         for ind in Month.index:
-            Month[ind] = strptime(str(Month[ind]), '%b').tm_mon
+            Month[ind] = str(strptime(str(Month[ind]), '%b').tm_mon)
 
-        df['columnName'] = Month
+        Year =  df[yearColumn]
+        for char in ["'", " ", "-", "_"]:
+            Year = Year.str.replace(char, '')
+
+        Day = df[dayColumn]
+
+        df[columnName] = Day+"/"+Month+"/"+Year
+        df[columnName] = pd.to_datetime(df[columnName])
+        if removeColumns:
+            self.removeColumns([monthColumn,dayColumn,yearColumn])
+        self.data = df
+
+    def removeColumns(self,columns):
+        df = self.data
+        df.drop(columns)
         self.data = df
